@@ -226,6 +226,6 @@ class StoryController extends Controller
             ->update(['blocked' => 1,
                 'update_by' => $user_id,
                 'updated_at' => date('Y-m-d H:i:s')]);
-        return Redirect::to('/');
+        return Redirect::to('/admin/');
     }
 }

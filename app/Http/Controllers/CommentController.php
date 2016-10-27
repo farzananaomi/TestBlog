@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -106,8 +107,11 @@ class CommentController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+       // echo $id;
+         DB::table('comments')->where('id',$id)
+            ->update(['is_delete'=>1,]);
+        return Redirect::back();
     }
 }

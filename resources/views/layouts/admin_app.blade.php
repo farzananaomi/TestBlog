@@ -36,7 +36,7 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/admin/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
             </div>
@@ -44,62 +44,25 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{url('/')}}">Home</a></li>
-                    <li><a href="{{url('/profile')}}">Post Story</a></li>
-
+                    <li><a href="{{url('/admin/')}}">Home</a></li>
+                    <li><a href="{{url('/admin/profile')}}">Post Story</a></li>
+                    <li><a href="{{url('/admin/users')}}">Users</a></li>
+                    <li><a href="{{url('/admin/admin_users')}}">Admin Users</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <form class="form-inline" role="form" method="POST" action="{{ url('/login') }}">
-                            {{ csrf_field() }}
-                            <li>
-                                <div class="row">
-                                    <div class="col-md-2 col-lg-2" style="margin-right: 5px;">
-                                        <input id="email" type="text" class="form-inline" name="email"
-                                               value="{{ old('email') }}" required
-                                               autofocus placeholder="Username/email" style="margin-top: 8px;"> @if ($errors->has('email'))
-                                            <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                        @endif
-                                    </div>
-                                    <div class="col-lg-1 col-md-1"></div>
-                                    <div class="col-lg-2 col-lg-2" style="margin-left: 5px; margin-right: 5px">
-                                        <input id="password" type="password" class="form-inline" name="password" placeholder="Password"
-                                               required style="margin-top: 8px;">
-                                        @if ($errors->has('password'))
-                                            <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                        @endif
-                                        <p> <a class="btn btn-link" href="{{ url('/password/reset') }}" style="font-size: 13px;">
-                                                Forgot Your Password?
-                                            </a></p>
-                                    </div>
-                                    <div class="col-lg-1 col-md-1"></div>
-                                    <div class="col-lg-2 col-md-2">
-                                        <button type="submit" class="btn btn-primary" style="  padding: 2px 9px; margin-top: 8px;">
-                                            Login
-                                        </button>
-                                    </div>
-                                  {{--  <div class="col-lg-1 col-md-1"></div>--}}
-                                    <div class="col-lg-2 col-md-2">
-                                        <a href="{{ url('/register') }}" class="btn btn-primary" style="  padding: 2px 9px; margin-top: 8px;">Register</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </form>
+
                         {{--<a href="{{ url('/login') }}">Login</a>--}}
 
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
-                                <img src="{{url(Auth::user()->avatar)}}" style="border-radius: 50%; width: 50px;"
-                                     alt=" "/> {{ Auth::user()->name }} <span class="caret"></span>
+                                {{--<img src="{{url(Auth::user()->avatar)}}" style="border-radius: 50%; width: 50px;"
+                                     alt=" "/>--}} {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">

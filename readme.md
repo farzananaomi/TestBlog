@@ -18,7 +18,6 @@ Create db and set connection string on .env file.
 php artisan migrate
 
 or u can run mysql script directly on DB folder.
-but U must be run DbScriptViewOnly.sql on DB folder to create view
 
 php artisan serve
 ## Official Documentation

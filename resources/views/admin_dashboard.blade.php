@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin_app')
 
 @section('content')
     <div class="container">
@@ -129,39 +129,17 @@
                                             Commented on <b> {{$cdata->ccreated_at}}</b>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-md-2"></div>
+                                    <div class="col-lg-2 col-md-2">
+                                        <a href="{{ url('admin/cdelete/'.$cdata->cid) }}" class="btn btn-info"
+                                           style="background-color: red">
+                                            <i class="fa fa-trash-o fa-2x " aria-hidden="true"
+                                               title="Delete"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             @endforeach
 
-                                <div class="row">
-                                    <form class="form-inline" role="form" method="POST"
-                                          action="{{ url('/comment/'.$row->id) }}">
-                                        {{ csrf_field() }}
-                                        <div class="col-lg-2 col-md-2"></div>
-                                        <div class="col-md-1 col-lg-1">
-                                            {{--  {{$row->id}} ||||||| {{$row->user_id}}--}}
-                                            <img src="{{$cdata->cavatar}}" alt=" "
-                                                 style="border-radius: 50%; width: 50px; margin-left: 12px;">
-                                        </div>
-                                        <div class="col-md-4 col-lg-4 ">
-                                    <textarea id="comment" name="comment" cols="50" rows="2" class="form-control"
-                                              autofocus>{{ old('comment') }}</textarea>
 
-                                            @if ($errors->has('comment'))
-                                                <span class="help-block">
-                                        <strong>{{ $errors->first('comment') }}</strong>
-                                    </span>
-                                            @endif
-                                        </div>
-                                        <div class="col-md-2 col-lg-2">
-                                            <button type="submit" class="btn btn-primary">
-                                                Comment
-                                            </button>
-                                        </div>
-
-
-                                    </form>
-                                </div>
                             @endif
                         </div>
                     </div>

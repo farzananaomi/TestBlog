@@ -73,14 +73,15 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        $avaterLocation = 'avatar/' . str_replace(" ","_",$data['name']) . '_' . time() . '.jpg';
+        $avaterLocation = 'avatar/' . str_replace(" ", "_", $data['name']) . '_' . time() . '.jpg';
         $img = Image::make($_FILES['avatar']['tmp_name']);
 
 // resize image
         $img->fit(300, 300);
 // save image
         $img->save($avaterLocation);
-
+       // $rules = ['dob' => 'olderThan']; // checks for 13 years as a default age
+      //  $rules = ['dob' => 'olderThan:15'];
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -89,7 +90,7 @@ class RegisterController extends Controller
             'dob' => $data['dob'],
             'gender' => $data['gender'],
             'password' => bcrypt($data['password']),
-            'is_admin'=>0,
+            'is_admin' => 0,
         ]);
     }
 }
