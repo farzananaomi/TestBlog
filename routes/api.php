@@ -13,6 +13,22 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+Route::group(['middleware' => ['api']], function () {
+
+
+    Route::POST('/register', 'ApiTokenController@register');
+
+    Route::POST('/login', 'ApiTokenController@login');
+    Route::get('/stories', 'ApiTokenController@stories');
+    Route::get('/stories/{id}', 'ApiTokenController@stories_id');
+    Route::get('/stories/{id}/comments', 'ApiTokenController@comments');
+    Route::POST('/profile', 'ApiTokenController@profile');
+
+    Route::POST('/stories', 'ApiTokenController@stories_share');
+    Route::POST('/stories/{id}/stories', 'ApiTokenController@comments_share');
+
+
+
+
+
+});

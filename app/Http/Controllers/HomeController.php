@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Story;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
+use League\Flysystem\Exception;
 
 class HomeController extends Controller
 {
@@ -26,26 +28,86 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //  $data=Story::all();
-
-
         $data = DB::table('story_view')
             ->where('is_delete', 0)
-            ->get();
+            ->paginate(15);
 
         if (!Auth::guest()) {
-            foreach ($data as $value) {
-                $story_id = $value->id;
-                $comment_data = DB::table('comment_view')
-                    ->where([
-                        ['story_id', '=', $story_id],
-                        ['cis_delete', '=', '0'],
-                    ])
-                    ->get();
-                $value->comments = $comment_data;
+            if (Auth::user()->is_admin) {
+                return (new AdminController)->index();
+            } else {
+                foreach ($data as $value) {
+                    $story_id = $value->id;
+                    $comment_data = DB::table('comment_view')
+                        ->where([
+                            ['story_id', '=', $story_id],
+                            ['cis_delete', '=', '0'],
+                        ])
+                        ->get();
+                    $value->comments = $comment_data;
+                }
             }
         }
         return view('home')->with('data', $data);
+
+    }
+
+    public function get_section_list()
+    {
+        $data = DB::table('sections')
+            ->orderBy('section_name', 'asc')
+            ->get();
+        $i = 0;
+        foreach ($data as $value) {
+            $select_list[$i++][$value->id] = $value->section_name;
+
+        }
+        return response()->json($select_list);
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $search_key = $request->input('search');
+            $data = DB::table('story_view')
+                ->Where([
+                    ['title', 'like', '%' . $search_key . '%'],
+                    ['is_delete', '=', '0']
+                ])
+                ->orWhere([['story_body', 'like', '%' . $search_key . '%'],
+                    ['is_delete', '=', '0']
+                ])
+                ->orWhere([
+                    ['section', 'like', '%' . $search_key . '%']
+                    ,
+                    ['is_delete', '=', '0']
+                ])
+                ->orWhere([
+                    ['tags', 'like', '%' . $search_key . '%'],
+                    ['is_delete', '=', '0']])
+                ->paginate(15);
+
+            if (!Auth::guest()) {
+                if (Auth::user()->is_admin) {
+                    return (new AdminController)->index();
+                } else {
+                    foreach ($data as $value) {
+                        $story_id = $value->id;
+                        $comment_data = DB::table('comment_view')
+                            ->where([
+                                ['story_id', '=', $story_id],
+                                ['cis_delete', '=', '0'],
+                            ])
+                            ->get();
+                        $value->comments = $comment_data;
+                    }
+                }
+            }
+            return view('home')->with('data', $data);
+        } catch (Exception $e) {
+            return back()->withInput();
+        }
+
 
     }
 }

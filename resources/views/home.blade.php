@@ -140,7 +140,7 @@
                                         <div class="col-lg-2 col-md-2"></div>
                                         <div class="col-md-1 col-lg-1">
                                             {{--  {{$row->id}} ||||||| {{$row->user_id}}--}}
-                                            <img src="{{$cdata->cavatar}}" alt=" "
+                                            <img src="{{$row->avatar}}" alt=" "
                                                  style="border-radius: 50%; width: 50px; margin-left: 12px;">
                                         </div>
                                         <div class="col-md-4 col-lg-4 ">
@@ -167,6 +167,9 @@
                     </div>
                 @endif
             @endforeach
+            <div class="col-lg-12 col-md-12">
+                {{ $data->links() }}
+            </div>
         </div>
     </div>
 @endsection

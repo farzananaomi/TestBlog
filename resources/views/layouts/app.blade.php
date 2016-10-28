@@ -58,9 +58,10 @@
                             <li>
                                 <div class="row">
                                     <div class="col-md-2 col-lg-2" style="margin-right: 5px;">
-                                        <input id="email" type="text" class="form-inline" name="email"
+                                        <input id="email" type="email" class="form-inline" name="email"
                                                value="{{ old('email') }}" required
-                                               autofocus placeholder="Username/email" style="margin-top: 8px;"> @if ($errors->has('email'))
+                                               autofocus placeholder="Username/email"
+                                               style="margin-top: 8px;"> @if ($errors->has('email'))
                                             <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
@@ -68,26 +69,30 @@
                                     </div>
                                     <div class="col-lg-1 col-md-1"></div>
                                     <div class="col-lg-2 col-lg-2" style="margin-left: 5px; margin-right: 5px">
-                                        <input id="password" type="password" class="form-inline" name="password" placeholder="Password"
+                                        <input id="password" type="password" class="form-inline" name="password"
+                                               placeholder="Password"
                                                required style="margin-top: 8px;">
                                         @if ($errors->has('password'))
                                             <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                         @endif
-                                        <p> <a class="btn btn-link" href="{{ url('/password/reset') }}" style="font-size: 13px;">
+                                        <p><a class="btn btn-link" href="{{ url('/password/reset') }}"
+                                              style="font-size: 13px;">
                                                 Forgot Your Password?
                                             </a></p>
                                     </div>
                                     <div class="col-lg-1 col-md-1"></div>
                                     <div class="col-lg-2 col-md-2">
-                                        <button type="submit" class="btn btn-primary" style="  padding: 2px 9px; margin-top: 8px;">
+                                        <button type="submit" class="btn btn-primary"
+                                                style="  padding: 2px 9px; margin-top: 8px;">
                                             Login
                                         </button>
                                     </div>
-                                  {{--  <div class="col-lg-1 col-md-1"></div>--}}
+                                    {{--  <div class="col-lg-1 col-md-1"></div>--}}
                                     <div class="col-lg-2 col-md-2">
-                                        <a href="{{ url('/register') }}" class="btn btn-primary" style="  padding: 2px 9px; margin-top: 8px;">Register</a>
+                                        <a href="{{ url('/register') }}" class="btn btn-primary"
+                                           style="  padding: 2px 9px; margin-top: 8px;">Register</a>
                                     </div>
                                 </div>
                             </li>
@@ -126,7 +131,32 @@
             </div>
         </div>
     </nav>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <form class="" role="form" method="POST" action="{{ url('/search') }}">
+                    <div class="col-lg-6 col-md-6">
+                        {{ csrf_field() }}
+                        <input id="search" type="text" class="form-control" name="search"
+                               value="{{ old('search') }}" required
+                               autofocus placeholder="Search Anythig "
+                               style="margin-top: 8px;"> @if ($errors->has('search'))
+                            <span class="help-block">
+                                        <strong>{{ $errors->first('search') }}</strong>
+                                    </span>
+                        @endif
+                    </div>
+                    <div class="col-lg-1 col-md-1"></div>
 
+                    <div class="col-lg-2 col-md-2">
+                        <button type="submit" class="btn btn-primary" style="">
+                            Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     @yield('content')
 </div>
 

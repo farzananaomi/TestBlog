@@ -17,6 +17,7 @@ use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\AdminController;
 
 class StoryController extends Controller
 {
@@ -34,8 +35,13 @@ class StoryController extends Controller
 
     public function index()
     {
-        //
-        return view('profile');
+        if (!Auth::guest()) {
+            if (Auth::user()->is_admin) {
+                return (new AdminController)->index();
+            } else {
+                return view('profile');
+            }
+        }
     }
 
     /**
@@ -43,7 +49,8 @@ class StoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public
+    function create()
     {
         //
         $rules = array(
@@ -51,6 +58,7 @@ class StoryController extends Controller
             'story_body' => 'required',
             'section' => 'required|max:255',
             'image_caption' => 'required|max:255',
+            'tags' => 'max:255',
             'image_story' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:90480',
         );
         $validator = Validator::make(Request::all(), $rules);
@@ -96,7 +104,8 @@ class StoryController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public
+    function store()
     {
 
 
@@ -108,7 +117,8 @@ class StoryController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public
+    function show($id)
     {
         //
     }
@@ -119,12 +129,12 @@ class StoryController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public
+    function edit($id)
     {
         $story = DB::table('story_view')
             ->where('id', $id)
-            ->limit(1)
-            ->get();
+            ->first();
         //  print_r($story);
         return view('edit_story')->with('story', $story);
     }
@@ -136,7 +146,8 @@ class StoryController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public
+    function update(Request $request, $id)
     {
         $user_id = Auth::user()->id;
         $rules = array(
@@ -205,7 +216,8 @@ class StoryController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
         $user_id = Auth::user()->id;
 
@@ -217,7 +229,8 @@ class StoryController extends Controller
         return Redirect::to('/');
     }
 
-    public function block($id)
+    public
+    function block($id)
     {
         $user_id = Auth::user()->id;
 

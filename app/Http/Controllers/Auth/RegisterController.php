@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Intervention\Image\ImageServiceProvider;
 use Image;
 use Illuminate\Support\Facades\Log;
+use DateTime;
 
 class RegisterController extends Controller
 {
@@ -50,16 +51,16 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        /*      'name' => 'required|max:255',
-                    'email' => 'required|email|max:255|unique:users',
-                    'password' => 'required|min:6|confirmed',
-                    'dob' => 'required|date',
-                    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:90480',*/
+        Validator::extend('MustBeOlderThan13Years', function($attribute, $value, $parameters)
+        {
+            $minAge = ( ! empty($parameters)) ? (int) $parameters[0] : 13;
+            return (new DateTime)->diff(new DateTime($value))->y >= $minAge;
+        });
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'dob' => 'required|date',
+            'dob' => 'required|date|MustBeOlderThan13Years',
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:90480',
         ]);
     }

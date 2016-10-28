@@ -44,10 +44,12 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{url('/admin/')}}">Home</a></li>
-                    <li><a href="{{url('/admin/profile')}}">Post Story</a></li>
-                    <li><a href="{{url('/admin/users')}}">Users</a></li>
-                    <li><a href="{{url('/admin/admin_users')}}">Admin Users</a></li>
+                    @if (!Auth::guest())
+                        <li><a href="{{url('/admin/')}}">Home</a></li>
+                        <li><a href="{{url('/admin/profile')}}">Post Story</a></li>
+                        <li><a href="{{url('/admin/users')}}">Users</a></li>
+                        <li><a href="{{url('/admin/admin_users')}}">Admin Users</a></li>
+                    @endif
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -67,7 +69,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="{{url('/user_edit')}}"> <i class="fa fa-pencil-square-o fa-2x "
+                                    <a href="{{url('/admin/edit/'.Auth::user()->id)}}"> <i class="fa fa-pencil-square-o fa-2x "
                                                                         aria-hidden="true" title="Edit"></i></a>
                                 </li>
                                 <li>

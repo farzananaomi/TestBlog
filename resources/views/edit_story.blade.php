@@ -138,9 +138,11 @@
                                         <label for="dob" class="col-md-4 control-label">Section</label>
 
                                         <div class="col-md-6">
-                                            <input id="section" type="text" class="form-control" name="section"
-                                                   value="{{ $data->section }}"
-                                                   required autofocus>
+                                            <select id="section" name="section" class="form-control"
+                                                    onclick="getDroupDownListSection();">
+                                                <option value="1">Select a Section</option>
+
+                                            </select>
 
                                             @if ($errors->has('section'))
                                                 <span class="help-block">
@@ -210,4 +212,23 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function getDroupDownListSection() {
+            //     alert();
+            $.ajax({
+                type: "GET",
+                url: '{{url('/section')}}',
+                data: "",
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        $.each(value, function (key2, value2) {
+                            $('#section').append('<option value=' + key2 + '>' + value2 + '</option>');
+                        });
+                    });
+                    $('#section').prop('onclick',null);
+                }
+            });
+        }
+
+    </script>
 @endsection
