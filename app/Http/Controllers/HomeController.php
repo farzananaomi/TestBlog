@@ -36,6 +36,7 @@ class HomeController extends Controller
 
         if (Auth::guest()) {
             //print_r($data);
+            //return view('home_before', ['data' => $data]);
             return view('home_before')->with('data', $data);
         } else {
             if (Auth::user()->is_admin) {

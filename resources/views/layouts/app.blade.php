@@ -158,9 +158,10 @@
             </div>
         </div>
     </div>
+    @endif
     @yield('content')
 </div>
-@endif
+
 <!-- Scripts -->
 <script src="/js/app.js"></script>
 </body>
