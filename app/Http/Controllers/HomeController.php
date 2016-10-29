@@ -18,6 +18,13 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        if (!Auth::guest()) {
+
+            if(Auth::user()->block==1 ||Auth::user()->is_delete==1){
+                Auth::logout();
+                return view('auth.login');
+            }
+        }
         // $this->middleware('auth');
     }
 
@@ -65,49 +72,5 @@ class HomeController extends Controller
         return response()->json($select_list);
     }
 
-    public function search(Request $request)
-    {
-        try {
-            $search_key = $request->input('search');
-            $data = DB::table('story_view')
-                ->Where([
-                    ['title', 'like', '%' . $search_key . '%'],
-                    ['is_delete', '=', '0']
-                ])
-                ->orWhere([['story_body', 'like', '%' . $search_key . '%'],
-                    ['is_delete', '=', '0']
-                ])
-                ->orWhere([
-                    ['section', 'like', '%' . $search_key . '%']
-                    ,
-                    ['is_delete', '=', '0']
-                ])
-                ->orWhere([
-                    ['tags', 'like', '%' . $search_key . '%'],
-                    ['is_delete', '=', '0']])
-                ->paginate(15);
 
-            if (!Auth::guest()) {
-                if (Auth::user()->is_admin) {
-                    return (new AdminController)->index();
-                } else {
-                    foreach ($data as $value) {
-                        $story_id = $value->id;
-                        $comment_data = DB::table('comment_view')
-                            ->where([
-                                ['story_id', '=', $story_id],
-                                ['cis_delete', '=', '0'],
-                            ])
-                            ->get();
-                        $value->comments = $comment_data;
-                    }
-                }
-            }
-            return view('home')->with('data', $data);
-        } catch (Exception $e) {
-            return back()->withInput();
-        }
-
-
-    }
 }

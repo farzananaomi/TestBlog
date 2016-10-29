@@ -89,8 +89,8 @@
 
                     <div class="panel-body">
                         @if (!Auth::guest())
-                            @foreach($story as $data)
-                                <form class="form-horizontal" role="form" method="POST" action="{{ url('/supdate/'.$data->id) }}"
+                           {{-- //@foreach($story as $data)--}}
+                                <form class="form-horizontal" role="form" method="POST" action="{{ url('/supdate/'.$story->id) }}"
                                       enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     @if (count($errors) > 0)
@@ -108,9 +108,9 @@
 
                                         <div class="col-md-6">
                                             <input id="id" type="hidden" class="form-control" name="id"
-                                                   value="{{$data->id}}" autofocus>
+                                                   value="{{$story->id}}" autofocus>
                                             <input id="title" type="text" class="form-control" name="title"
-                                                   value="{{$data->title}}" required autofocus>
+                                                   value="{{$story->title}}" required autofocus>
 
                                             @if ($errors->has('title'))
                                                 <span class="help-block">
@@ -125,7 +125,7 @@
 
                                         <div class="col-md-6">
                                         <textarea id="story_body" name="story_body" cols="50" rows="2"
-                                                  class="form-control" required>{{$data->story_body}}</textarea>
+                                                  class="form-control" required>{{$story->story_body}}</textarea>
 
                                             @if ($errors->has('story_body'))
                                                 <span class="help-block">
@@ -156,7 +156,7 @@
 
                                         <div class="col-md-6">
                                             <input id="tags" type="text" class="form-control" name="tags"
-                                                   value="{{ $data->tags }}"
+                                                   value="{{ $story->tags }}"
                                                    autofocus>
 
                                             @if ($errors->has('tags'))
@@ -186,7 +186,7 @@
                                         <div class="col-md-6">
                                             <input id="image_caption" type="text" class="form-control"
                                                    name="image_caption"
-                                                   value="{{ $data->image_caption }}" required>
+                                                   value="{{ $story->image_caption }}" required>
 
                                             @if ($errors->has('image_caption'))
                                                 <span class="help-block">
@@ -205,7 +205,7 @@
                                     </div>
 
                                 </form>
-                            @endforeach
+                         {{--  // @endforeach--}}
                         @endif
                     </div>
                 </div>

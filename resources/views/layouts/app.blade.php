@@ -131,6 +131,7 @@
             </div>
         </div>
     </nav>
+    @if(!Auth::guest())
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="row">
@@ -159,7 +160,7 @@
     </div>
     @yield('content')
 </div>
-
+@endif
 <!-- Scripts -->
 <script src="/js/app.js"></script>
 </body>

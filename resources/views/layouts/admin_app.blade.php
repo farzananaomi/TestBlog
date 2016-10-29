@@ -46,7 +46,7 @@
                 <ul class="nav navbar-nav">
                     @if (!Auth::guest())
                         <li><a href="{{url('/admin/')}}">Home</a></li>
-                        <li><a href="{{url('/admin/profile')}}">Post Story</a></li>
+                {{--        <li><a href="{{url('/admin/profile')}}">Post Story</a></li>--}}
                         <li><a href="{{url('/admin/users')}}">Users</a></li>
                         <li><a href="{{url('/admin/admin_users')}}">Admin Users</a></li>
                     @endif

@@ -31,6 +31,13 @@ class StoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        if (Auth::check()) {
+
+            if(Auth::user()->block==1 ||Auth::user()->is_delete==1){
+                Auth::logout();
+                return view('auth.login');
+            }
+        }
     }
 
     public function index()
@@ -39,9 +46,33 @@ class StoryController extends Controller
             if (Auth::user()->is_admin) {
                 return (new AdminController)->index();
             } else {
-                return view('profile');
+                $data = DB::table('story_view')
+                    ->Where([
+                        ['user_id', '=',Auth::user()->id],
+
+                    ])
+
+                    ->paginate(15);
+
+                if (!Auth::guest()) {
+                    if (Auth::user()->is_admin) {
+                        return (new AdminController)->index();
+                    } else {
+                        foreach ($data as $value) {
+                            $story_id = $value->id;
+                            $comment_data = DB::table('comment_view')
+                                ->where([
+                                    ['story_id', '=', $story_id],
+                                    ['cis_delete', '=', '0'],
+                                ])
+                                ->get();
+                            $value->comments = $comment_data;
+                        }
+                    }
+                }
             }
         }
+        return view('profile')->with('data', $data);
     }
 
     /**
@@ -92,7 +123,7 @@ class StoryController extends Controller
             }
             // redirect
             Session::flash('message', 'Successfully created ');
-            return Redirect::to('profile');
+            return Redirect::to('/');
         }
     }
 
@@ -104,9 +135,48 @@ class StoryController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public
-    function store()
+    public function search(Request $request)
     {
+        try {
+            $search_key = Request::get('search');//$request->input('search');
+            $data = DB::table('story_view')
+                ->Where([
+                    ['title', 'like', '%' . $search_key . '%'],
+                    ['is_delete', '=', '0']
+                ])
+                ->orWhere([['story_body', 'like', '%' . $search_key . '%'],
+                    ['is_delete', '=', '0']
+                ])
+                ->orWhere([
+                    ['section', 'like', '%' . $search_key . '%']
+                    ,
+                    ['is_delete', '=', '0']
+                ])
+                ->orWhere([
+                    ['tags', 'like', '%' . $search_key . '%'],
+                    ['is_delete', '=', '0']])
+                ->paginate(15);
+
+            if (!Auth::guest()) {
+                if (Auth::user()->is_admin) {
+                    return (new AdminController)->index();
+                } else {
+                    foreach ($data as $value) {
+                        $story_id = $value->id;
+                        $comment_data = DB::table('comment_view')
+                            ->where([
+                                ['story_id', '=', $story_id],
+                                ['cis_delete', '=', '0'],
+                            ])
+                            ->get();
+                        $value->comments = $comment_data;
+                    }
+                }
+            }
+            return view('home')->with('data', $data);
+        } catch (Exception $e) {
+            return back()->withInput();
+        }
 
 
     }

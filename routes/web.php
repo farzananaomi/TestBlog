@@ -16,14 +16,15 @@ Route::get('/', 'HomeController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
-Route::POST('/search', 'HomeController@search');
+
 Route::get('/section', 'HomeController@get_section_list');
 
-Route::get('profile', 'StoryController@index');
+
 
 Route::group(['middleware' => ['auth']], function () {
 
-
+    Route::POST('/search', 'StoryController@search');
+    Route::get('profile', 'StoryController@index');
     Route::POST('comment/{story_id?}', 'CommentController@create');
 
     Route::POST('story2', 'StoryController@create');

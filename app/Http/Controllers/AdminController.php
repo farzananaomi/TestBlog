@@ -31,6 +31,13 @@ class AdminController extends Controller
                 return view('auth.admin_login');
             }
         }
+        if (!Auth::guest()) {
+
+            if (Auth::user()->block == 1 || Auth::user()->is_delete == 1) {
+                Auth::logout();
+                return view('auth.login');
+            }
+        }
     }
 
     /*if ($request->is('admin/*')) {
@@ -85,6 +92,10 @@ class AdminController extends Controller
         if (Auth::guest()) {
             return view('auth.admin_login');
         } else {
+            if (!Auth::user()->is_admin) {
+                Auth::logout();
+                return view('auth.admin_login');
+            }
             $rules = array(
                 'name' => 'required|max:255',
                 'email' => 'required|max:255',
@@ -175,6 +186,10 @@ class AdminController extends Controller
         if (Auth::guest()) {
             return view('auth.admin_login');
         } else {
+            if (!Auth::user()->is_admin) {
+                Auth::logout();
+                return view('auth.admin_login');
+            }
             $users = DB::table('users')
                 ->where('is_admin', 1)
                 ->paginate(15);
@@ -188,6 +203,10 @@ class AdminController extends Controller
         if (Auth::guest()) {
             return view('auth.admin_login');
         } else {
+            if (!Auth::user()->is_admin) {
+                Auth::logout();
+                return view('auth.admin_login');
+            }
             $users = DB::table('users')
                 ->where([['is_admin', 0], ['block', 0]])
                 ->paginate(15);
@@ -207,10 +226,14 @@ class AdminController extends Controller
         if (Auth::guest()) {
             return view('auth.admin_login');
         } else {
+            if (!Auth::user()->is_admin) {
+                Auth::logout();
+                return view('auth.admin_login');
+            }
 
             $users = DB::table('users')
                 ->where('id', $id)->first();
-          //  print_r($users);
+            //  print_r($users);
 
 
             return view('admin_edit', ['users' => $users]);
@@ -230,6 +253,10 @@ class AdminController extends Controller
         if (Auth::guest()) {
             return view('auth.admin_login');
         } else {
+            if (!Auth::user()->is_admin) {
+                Auth::logout();
+                return view('auth.admin_login');
+            }
             $rules = array(
                 'name' => 'required|max:255',
                 'email' => 'required|max:255',
@@ -339,6 +366,10 @@ class AdminController extends Controller
         if (Auth::guest()) {
             return view('auth.admin_login');
         } else {
+            if (!Auth::user()->is_admin) {
+                Auth::logout();
+                return view('auth.admin_login');
+            }
             $user_id = Auth::user()->id;
 
             DB::table('users')
