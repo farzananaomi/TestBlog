@@ -31,13 +31,7 @@ class AdminController extends Controller
                 return view('auth.admin_login');
             }
         }
-        if (!Auth::guest()) {
 
-            if (Auth::user()->block == 1 || Auth::user()->is_delete == 1) {
-                Auth::logout();
-                return view('auth.login');
-            }
-        }
     }
 
     /*if ($request->is('admin/*')) {

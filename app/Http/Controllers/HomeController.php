@@ -18,13 +18,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        if (!Auth::guest()) {
 
-            if(Auth::user()->block==1 ||Auth::user()->is_delete==1){
-                Auth::logout();
-                return view('auth.login');
-            }
-        }
         // $this->middleware('auth');
     }
 
@@ -35,11 +29,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         $data = DB::table('story_view')
             ->where('is_delete', 0)
             ->paginate(15);
 
-        if (!Auth::guest()) {
+        if (Auth::guest()) {
+            //print_r($data);
+            return view('home_before')->with('data', $data);
+        } else {
             if (Auth::user()->is_admin) {
                 return (new AdminController)->index();
             } else {
@@ -53,9 +51,11 @@ class HomeController extends Controller
                         ->get();
                     $value->comments = $comment_data;
                 }
+
+                return view('home')->with('data', $data);
             }
         }
-        return view('home')->with('data', $data);
+
 
     }
 

@@ -26,13 +26,7 @@ class CommentController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        if (!Auth::guest()) {
 
-            if(Auth::user()->block==1 ||Auth::user()->is_delete==1){
-                Auth::logout();
-                return view('auth.login');
-            }
-        }
     }
 
     public function index()
