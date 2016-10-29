@@ -14,7 +14,10 @@ class CreateViews extends Migration
     public function up()
     {
         //
-        DB::unprepared('CREATE  VIEW `story_view` AS (
+
+
+
+        DB::unprepared('DROP TABLE IF EXISTS `story_view`;CREATE  VIEW `story_view` AS (
 SELECT
   `storys`.`id`             AS `id`,
   `storys`.`user_id`        AS `user_id`,
@@ -41,7 +44,8 @@ FROM (((`storys`
      ON ((`sections`.`id` = `storys`.`section`)))
 GROUP BY `storys`.`id`
 ORDER BY `storys`.`id` DESC)');
-        DB::unprepared('CREATE   VIEW `stories_view` AS (
+
+        DB::unprepared('DROP TABLE IF EXISTS `stories_view`;CREATE   VIEW `stories_view` AS (
 SELECT
   `storys`.`id`            AS `id`,
   `storys`.`title`         AS `title`,
@@ -52,7 +56,8 @@ SELECT
 FROM `storys`
 WHERE ((`storys`.`is_delete` = 0)
        AND (`storys`.`blocked` = 0)));');
-        DB::unprepared('CREATE  VIEW `comment_view` AS (
+
+        DB::unprepared('DROP TABLE IF EXISTS `comment_view`;CREATE  VIEW `comment_view` AS (
 SELECT
   `comments`.`id`         AS `cid`,
   `comments`.`story_id`   AS `story_id`,
