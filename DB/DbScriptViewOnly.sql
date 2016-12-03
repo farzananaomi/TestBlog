@@ -52,7 +52,7 @@ WHERE ((`storys`.`is_delete` = 0)
        AND (`storys`.`blocked` = 0)));
 	   
 	   
-	   DELIMITER $$
+ 
 
 CREATE  VIEW `comment_view` AS (
 SELECT
